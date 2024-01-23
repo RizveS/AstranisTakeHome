@@ -5,10 +5,10 @@ class Sensor:
         
         def __init__(self):
             #Sensor parameters
-            self.delay = 0.1
+            self.delay = 0.01
             self.offset = 0
             self.noise = 2
-            self.updateRate = 2
+            self.updateRate = 0.1
             self.t = []
             self.StateHistory = []
 
