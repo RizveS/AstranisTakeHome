@@ -13,7 +13,7 @@ deltaT = 0.005
 pos0 = 0
 vel0 = 2
 
-enableSensorModel = False
+enableSensorModel = True
 enableSaturatedActuator = False
 enableReferenceTracking = True
 
