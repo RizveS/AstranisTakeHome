@@ -4,11 +4,11 @@ b = 2
 m = 3
 
 kp = 2
-kd = 0.01
-ki = 0.02
+kd = 1
+ki = 0.2
 posFinal = 5
 
-t_sim = 30
+t_sim = 100
 deltaT = 0.005
 pos0 = 0
 vel0 = 2

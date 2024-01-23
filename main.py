@@ -15,7 +15,7 @@ errorHistory = [np.asarray([StateHistory[0][0]-ControllerParams['posFinal'],0,0]
 timestep = 0
 
 #Initialize Controller
-control = Controller(ControllerParams,idealControllerBool=False)
+control = Controller(ControllerParams,DerivativeControl=True)
 sensor = Sensor()
 
 #Controllers
@@ -43,4 +43,5 @@ plt.ylabel("Magnitude")
 plt.grid()
 plt.legend()
 plt.show()
+
 

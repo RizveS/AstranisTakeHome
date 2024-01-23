@@ -1,9 +1,9 @@
 import numpy as np
 
 class Controller:
-    def __init__(self, ControllerParams,idealControllerBool):
+    def __init__(self, ControllerParams,DerivativeControl=False):
         self.Params = ControllerParams
-        self.ideal = idealControllerBool
+        self.ideal = DerivativeControl
         self.t = []
         self.StateHistory = []
         self.desiredState = np.array([ControllerParams['posFinal'],0],dtype=float)
@@ -12,7 +12,13 @@ class Controller:
     def updateStateMemory(self,time,state):
         self.t.append(time)
         self.StateHistory.append(state)
-        self.errorState = np.array([state[0]-self.desiredState[0],0,self.errorState[2]+self.errorState[0]*self.Params['deltaT']])
+        if self.ideal == False:
+            self.errorState = np.array([state[0]-self.desiredState[0],0,self.errorState[2]+self.errorState[0]*self.Params['deltaT']])
+        else:
+            #Utilizes forward difference to calculate derivative of error
+            self.errorState = np.array([state[0]-self.desiredState[0],
+                                        (state[0]-self.desiredState[0]-self.errorState[0])/self.Params['deltaT'],
+                                         self.errorState[2]+self.errorState[0]*self.Params['deltaT']])
 
 
     def ControlSignal(self):
