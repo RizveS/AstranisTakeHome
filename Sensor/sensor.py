@@ -1,22 +1,42 @@
 import numpy as np
 
-#Sensor parameters
-delay = 0.01
-offset = 0
-noise = 0.1
-updateRate = 0.1
 
-def measure(currentTime,timeHistory,StateHistory):
-        #Routine to generate the sensor measurements
+class Sensor:
+        
+        def __init__(self):
+            #Sensor parameters
+            self.delay = 0.1
+            self.offset = 0
+            self.noise = 2
+            self.updateRate = 2
+            self.t = []
+            self.StateHistory = []
 
-        #Generate the delayed position estimate
-        delayedTime = currentTime - delay - updateRate
-        posHistory = [state[0] for state in StateHistory]
-        delayedMeasure = np.interp(delayedTime,timeHistory,posHistory)
+        def updateStateMemory(self,time,state):
+               self.t.append(time)
+               self.StateHistory.append(state)
 
-        #Add noise and offset
-        delayedMeasure = delayedMeasure + offset
-        delayedMeasure = delayedMeasure + np.random.normal(0,0.1)
+               if len(self.t) > 1000:
+                      self.t = self.t[50:]
+                      self.StateHistory= self.StateHistory[50:]
 
-        return delayedMeasure
+
+        def measure(self,currentTime):
+                #Routine to generate the sensor measurements
+
+                timeHistory = self.t
+                StateHistory = self.StateHistory
+                #Generate the delayed position estimate
+                delayedTime = currentTime - self.delay - self.updateRate
+                if delayedTime < 0:
+                       delayedTime = 0
+
+                posHistory = [state[0] for state in StateHistory]
+                delayedMeasure = np.interp(delayedTime,timeHistory,posHistory)
+
+                #Add noise and offset
+                delayedMeasure = delayedMeasure + self.offset
+                delayedMeasure = delayedMeasure + np.random.normal(0,0.1)
+
+                return np.array([delayedMeasure,None])
 

@@ -6,9 +6,9 @@ m = 3
 kp = 2
 kd = 0.01
 ki = 0.02
-posFinal = 100
+posFinal = 5
 
-t_sim = 1000
+t_sim = 30
 deltaT = 0.005
 pos0 = 0
 vel0 = 2
