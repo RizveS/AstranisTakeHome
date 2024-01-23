@@ -12,12 +12,13 @@ import numpy as np
 t = np.linspace(0,SimulationParams['t_sim'], int(SimulationParams['t_sim']/SimulationParams['deltaT']))
 StateHistory = [np.asarray([SimulationParams['pos0'],SimulationParams['vel0']],dtype=float)]
 PowerConsumption = []
+ForceHistory = []
 TotalEnergy = [0]
 errorHistory = [np.asarray([StateHistory[0][0]-ControllerParams['posFinal'],0,0],dtype=float)]
 timestep = 0
 
 #Initialize Controller & Sensor objects
-control = Controller(ControllerParams,DerivativeControl=True)
+control = Controller(ControllerParams,True,SimulationParams['actuator'])
 sensor = Sensor()
 
 #Controllers
@@ -37,6 +38,7 @@ for elem in t:
     #Propagate state quantities
     PowerConsumption.append(F*currentState[1])
     TotalEnergy.append(TotalEnergy[timestep]+abs(PowerConsumption[-1]*SimulationParams['deltaT']))
+    ForceHistory.append(F)
     nextState = Propagate(SimulationParams['deltaT'],elem,currentState,SystemParams,F)
     StateHistory.append(nextState)
     timestep = timestep + 1
@@ -49,10 +51,11 @@ velTrue = [state[1] for state in StateHistory]
 
 posMeas = [state[0] for state in control.StateHistory]
 
-fig, axs = plt.subplots(1,2)
+fig, axs = plt.subplots(1,3)
+fig.suptitle("Closed Loop Simulation (wi Sensor Model)")
+axs[0].plot(t,posMeas,label="Measured Position")
 axs[0].plot(t,posTrue[1:],label="True Position")
 axs[0].plot(t,velTrue[1:],label="True Speed")
-axs[0].plot(t,posMeas,label="Measured Position")
 axs[0].grid()
 axs[0].legend()
 axs[0].set(xlabel="Time (in seconds)",ylabel="Magnitude")
@@ -61,7 +64,11 @@ axs[1].plot(t,TotalEnergy[1:],label="Total Energy Used (in Ws)")
 axs[1].set(xlabel="Time (in seconds)",ylabel="Magnitude")
 axs[1].grid()
 axs[1].legend()
-
+axs[2].plot(t,ForceHistory,label="Force (in N)")
+axs[2].set(xlabel="Time (in seconds)",ylabel="Magnitude")
+axs[2].grid()
+axs[2].legend()
 plt.show()
+
 
 
