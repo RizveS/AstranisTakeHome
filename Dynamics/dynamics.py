@@ -3,6 +3,7 @@ import numpy as np
 def StateDerivative(t,currentState,Param,F):
     pos = currentState[0]
     vel = currentState[1]
+    disturbance = lambda t: 10 if t < 50 else 0
     acc = (1/Param["m"])*(F-Param["k"]*pos-Param["b"]*vel)
     return np.asarray([vel,acc],dtype=float)
 

@@ -5,4 +5,4 @@ from monteCarlo import MonteCarlo
 #MonteCarlo()
 
 #Uncomment if you want to run the main simulation with nominal parameters
-#mainSimulation(enablePlots=True)
+mainSimulation(enablePlots=True)

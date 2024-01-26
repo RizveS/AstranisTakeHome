@@ -1,0 +1,7 @@
+Hi!
+The website did not take any .zip files and I tried to write this all in a modular format to make it easy to extend.
+I pushed all the files to a GitHub repo and they can be accessed there.
+Apologies for the roundabout way of getting to this.
+Thank you!
+
+GitHub Repo: https://github.com/RizveS/AstranisTakeHome
